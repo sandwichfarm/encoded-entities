@@ -1,3 +1,6 @@
+// Import Filter type from nostr-tools
+import type { Filter } from 'nostr-tools/lib/types/filter';
+
 export interface BunkerInfo {
   pubkey: string;
   local_key: string;
@@ -6,25 +9,19 @@ export interface BunkerInfo {
 }
 
 export interface Site {
-  protocol: string;
-  path: string;
+  relays: string[];      // At least one required
+  servers: string[];     // At least one required
+  pubkey: string;        // Hex string
+  paths?: string[];      // Optional paths
+  hashes?: string[];     // Optional hashes
+  // Additional post-resolution data can be added as needed
+  [key: string]: any;    // Allow for extension
 }
 
-export interface NostrFilter {
-  ids?: string[];
-  authors?: string[];
-  kinds?: number[];
-  '#e'?: string[];
-  '#p'?: string[];
-  '#a'?: string[];
-  since?: number;
-  until?: number;
-  limit?: number;
-  search?: string;
-  [key: string]: string[] | number[] | number | string | undefined;
-}
+// Re-export Filter from nostr-tools for convenience
+export type NostrFilter = Filter;
 
 export interface Feed {
-  filters: NostrFilter[];
+  filters: Filter[];
   relays: string[];
 }

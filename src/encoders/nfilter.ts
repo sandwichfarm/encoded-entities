@@ -31,60 +31,35 @@ export function encodeNfilter(filter: NostrFilter): string {
       }
     }
 
-    if (filter['#e']) {
-      for (const e of filter['#e']) {
-        encodedData.push(new Uint8Array([3]));
-        const eBytes = hexToBytes(e);
-        encodedData.push(new Uint8Array([eBytes.length]));
-        encodedData.push(eBytes);
-      }
-    }
-
-    if (filter['#p']) {
-      for (const p of filter['#p']) {
-        encodedData.push(new Uint8Array([4]));
-        const pBytes = hexToBytes(p);
-        encodedData.push(new Uint8Array([pBytes.length]));
-        encodedData.push(pBytes);
-      }
-    }
-
-    if (filter['#a']) {
-      for (const a of filter['#a']) {
-        encodedData.push(new Uint8Array([5]));
-        const aBytes = new TextEncoder().encode(a);
-        encodedData.push(encodeVarInt(aBytes.length));
-        encodedData.push(aBytes);
-      }
-    }
+    // Removed - now handled by generic tag handler below
 
     if (filter.since !== undefined) {
-      encodedData.push(new Uint8Array([6]));
+      encodedData.push(new Uint8Array([3]));
       encodedData.push(encodeVarInt(filter.since));
     }
 
     if (filter.until !== undefined) {
-      encodedData.push(new Uint8Array([7]));
+      encodedData.push(new Uint8Array([4]));
       encodedData.push(encodeVarInt(filter.until));
     }
 
     if (filter.limit !== undefined) {
-      encodedData.push(new Uint8Array([8]));
+      encodedData.push(new Uint8Array([5]));
       encodedData.push(encodeVarInt(filter.limit));
     }
 
     if (filter.search) {
-      encodedData.push(new Uint8Array([9]));
+      encodedData.push(new Uint8Array([6]));
       const searchBytes = new TextEncoder().encode(filter.search);
       encodedData.push(encodeVarInt(searchBytes.length));
       encodedData.push(searchBytes);
     }
 
-    // Handle custom tags (e.g., #d, #r, etc.)
+    // Handle all tag filters (e.g., #e, #p, #a, #d, #r, etc.)
     for (const [key, value] of Object.entries(filter)) {
-      if (key.startsWith('#') && key !== '#e' && key !== '#p' && key !== '#a' && Array.isArray(value)) {
+      if (key.startsWith('#') && Array.isArray(value)) {
         for (const tagValue of value) {
-          encodedData.push(new Uint8Array([10]));
+          encodedData.push(new Uint8Array([7]));
           const keyBytes = new TextEncoder().encode(key);
           encodedData.push(new Uint8Array([keyBytes.length]));
           encodedData.push(keyBytes);
@@ -157,58 +132,31 @@ export function decodeNfilter(encoded: string): NostrFilter {
           break;
         }
         case 3: {
-          const length = bytes[offset];
-          offset += 1;
-          const e = bytesToHex(bytes.slice(offset, offset + length));
-          offset += length;
-          if (!filter['#e']) filter['#e'] = [];
-          filter['#e'].push(e);
-          break;
-        }
-        case 4: {
-          const length = bytes[offset];
-          offset += 1;
-          const p = bytesToHex(bytes.slice(offset, offset + length));
-          offset += length;
-          if (!filter['#p']) filter['#p'] = [];
-          filter['#p'].push(p);
-          break;
-        }
-        case 5: {
-          const [length, bytesRead] = decodeVarInt(bytes, offset);
-          offset += bytesRead;
-          const a = new TextDecoder().decode(bytes.slice(offset, offset + length));
-          offset += length;
-          if (!filter['#a']) filter['#a'] = [];
-          filter['#a'].push(a);
-          break;
-        }
-        case 6: {
           const [since, bytesRead] = decodeVarInt(bytes, offset);
           offset += bytesRead;
           filter.since = since;
           break;
         }
-        case 7: {
+        case 4: {
           const [until, bytesRead] = decodeVarInt(bytes, offset);
           offset += bytesRead;
           filter.until = until;
           break;
         }
-        case 8: {
+        case 5: {
           const [limit, bytesRead] = decodeVarInt(bytes, offset);
           offset += bytesRead;
           filter.limit = limit;
           break;
         }
-        case 9: {
+        case 6: {
           const [length, bytesRead] = decodeVarInt(bytes, offset);
           offset += bytesRead;
           filter.search = new TextDecoder().decode(bytes.slice(offset, offset + length));
           offset += length;
           break;
         }
-        case 10: {
+        case 7: {
           const keyLength = bytes[offset];
           offset += 1;
           const key = new TextDecoder().decode(bytes.slice(offset, offset + keyLength));
@@ -217,8 +165,8 @@ export function decodeNfilter(encoded: string): NostrFilter {
           offset += valueBytesRead;
           const value = new TextDecoder().decode(bytes.slice(offset, offset + valueLength));
           offset += valueLength;
-          if (!filter[key]) filter[key] = [];
-          (filter[key] as string[]).push(value);
+          if (!(key in filter)) (filter as any)[key] = [];
+          (filter as any)[key].push(value);
           break;
         }
         default:

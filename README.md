@@ -11,7 +11,7 @@ npm install encoded-entities
 ## Supported Entity Types
 
 - **nbunksec** - NIP-46 bunker connection info (pubkey, local_key, relays, secret)
-- **nsite** - Nostr site/path reference with optional NIP number
+- **nsite** - Nostr site resolution info (relays, servers, pubkey, optional paths/hashes)
 - **nfilter** - Single Nostr filter
 - **nfilters** - Multiple Nostr filters
 - **nfeed** - Combination of filters and relays
@@ -55,14 +55,19 @@ const encoded2 = nbunksec.encode(bunkerInfo);
 const decoded2 = nbunksec.decode(encoded2);
 ```
 
-### nsite - Site Reference
+### nsite - Site Resolution Info
 
 ```typescript
 import { nsite, encodeNsite, decodeNsite } from 'encoded-entities';
 
 const site = {
-  protocol: 'nostr',
-  path: 'event/1234567890abcdef'
+  relays: ['wss://relay1.example.com', 'wss://relay2.example.com'],
+  servers: ['https://server1.example.com', 'https://server2.example.com'],
+  pubkey: 'a'.repeat(64),  // hex string
+  paths: ['/api/v1', '/nostr'],  // optional
+  hashes: ['sha256hash1', 'sha256hash2'],  // optional, preferred for integrity
+  // Additional custom fields supported
+  customData: { version: 1 }
 };
 
 const encoded = nsite.encode(site);
@@ -133,8 +138,12 @@ interface BunkerInfo {
 }
 
 interface Site {
-  protocol: string;
-  path: string;
+  relays: string[];      // At least one required
+  servers: string[];     // At least one required  
+  pubkey: string;        // Hex string
+  paths?: string[];      // Optional paths
+  hashes?: string[];     // Optional hashes (preferred for integrity)
+  [key: string]: any;    // Additional custom fields
 }
 
 interface NostrFilter {
