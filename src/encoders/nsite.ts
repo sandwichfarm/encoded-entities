@@ -16,10 +16,7 @@ export function encodeNsite(site: Site): string {
     encodedData.push(encodeVarInt(pathBytes.length));
     encodedData.push(pathBytes);
 
-    if (site.nip !== undefined) {
-      encodedData.push(new Uint8Array([2]));
-      encodedData.push(encodeVarInt(site.nip));
-    }
+    // NIP field removed - will be added when NIP is finalized
 
     const combinedLength = encodedData.reduce(
       (sum, part) => sum + part.length,
@@ -75,9 +72,9 @@ export function decodeNsite(encoded: string): Site {
           break;
         }
         case 2: {
-          const [nip, bytesRead] = decodeVarInt(bytes, offset);
+          // Skip NIP field if present in legacy encodings
+          const [, bytesRead] = decodeVarInt(bytes, offset);
           offset += bytesRead;
-          site.nip = nip;
           break;
         }
         default:

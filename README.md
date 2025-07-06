@@ -62,8 +62,7 @@ import { nsite, encodeNsite, decodeNsite } from 'encoded-entities';
 
 const site = {
   protocol: 'nostr',
-  path: 'event/1234567890abcdef',
-  nip: 19  // optional
+  path: 'event/1234567890abcdef'
 };
 
 const encoded = nsite.encode(site);
@@ -136,7 +135,6 @@ interface BunkerInfo {
 interface Site {
   protocol: string;
   path: string;
-  nip?: number;
 }
 
 interface NostrFilter {

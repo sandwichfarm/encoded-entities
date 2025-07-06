@@ -8,7 +8,6 @@ export interface BunkerInfo {
 export interface Site {
   protocol: string;
   path: string;
-  nip?: number;
 }
 
 export interface NostrFilter {

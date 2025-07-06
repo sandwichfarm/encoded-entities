@@ -4,8 +4,7 @@ import { Site } from '../types';
 describe('nsite', () => {
   const testSite: Site = {
     protocol: 'nostr',
-    path: 'event/1234567890abcdef',
-    nip: 19
+    path: 'event/1234567890abcdef'
   };
 
   it('should encode and decode site correctly', () => {
@@ -16,15 +15,15 @@ describe('nsite', () => {
     expect(decoded).toEqual(testSite);
   });
 
-  it('should encode without nip', () => {
-    const siteWithoutNip: Site = {
+  it('should encode different paths', () => {
+    const siteWithDifferentPath: Site = {
       protocol: 'nostr',
       path: 'profile/pubkey123'
     };
     
-    const encoded = encodeNsite(siteWithoutNip);
+    const encoded = encodeNsite(siteWithDifferentPath);
     const decoded = decodeNsite(encoded);
-    expect(decoded).toEqual(siteWithoutNip);
+    expect(decoded).toEqual(siteWithDifferentPath);
   });
 
   it('should work with object interface', () => {
