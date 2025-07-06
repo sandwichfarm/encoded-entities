@@ -1,6 +1,6 @@
 # encoded-entities
 
-Unofficial NIP-19 encoded entities for Nostr. This library provides encoding and decoding functions for various Nostr entity types using bech32 encoding.
+UNofficial NIP-19 encoded entities that I use. This library provides encoding and decoding functions for various Nostr entity types using bech32 encoding.
 
 ## Installation
 
