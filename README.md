@@ -1,12 +1,14 @@
 # encoded-entities
 
-UNofficial NIP-19 encoded entities that I use. This library provides encoding and decoding functions for various Nostr entity types using bech32 encoding.
+Unofficial NIP-19 encoded entities. This library provides encoding and decoding functions for various Nostr entity types using bech32 encoding.
 
 ## Installation
 
 ```bash
-npm install encoded-entities
+npm install encoded-entities nostr-tools
 ```
+
+Note: `nostr-tools` is a peer dependency and must be installed separately.
 
 ## Supported Entity Types
 
@@ -31,7 +33,8 @@ import { encodeNbunksec, decodeNbunksec } from 'encoded-entities';
 import { nbunksec, nsite, nfilter, nfilters, nfeed } from 'encoded-entities';
 
 // Import types
-import { BunkerInfo, Site, NostrFilter, Feed } from 'encoded-entities';
+import { BunkerInfo, Site, Feed } from 'encoded-entities';
+// NostrFilter is imported from nostr-tools (peer dependency)
 ```
 
 ### nbunksec - Bunker Connection Info
@@ -65,7 +68,7 @@ const site = {
   servers: ['https://server1.example.com', 'https://server2.example.com'],
   pubkey: 'a'.repeat(64),  // hex string
   paths: ['/api/v1', '/nostr'],  // optional
-  hashes: ['sha256hash1', 'sha256hash2'],  // optional, preferred for integrity
+  hashes: ['b'.repeat(64), 'c'.repeat(64)],  // optional, preferred for integrity
   // Additional custom fields supported
   customData: { version: 1 }
 };
@@ -146,22 +149,11 @@ interface Site {
   [key: string]: any;    // Additional custom fields
 }
 
-interface NostrFilter {
-  ids?: string[];
-  authors?: string[];
-  kinds?: number[];
-  '#e'?: string[];
-  '#p'?: string[];
-  '#a'?: string[];
-  since?: number;
-  until?: number;
-  limit?: number;
-  search?: string;
-  [key: string]: string[] | number[] | number | string | undefined;
-}
+// NostrFilter type is imported from nostr-tools
+// See: https://github.com/nbd-wtf/nostr-tools
 
 interface Feed {
-  filters: NostrFilter[];
+  filters: Filter[];     // Filter type from nostr-tools
   relays: string[];
 }
 ```
