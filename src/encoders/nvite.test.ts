@@ -4,12 +4,10 @@ import { Invite } from '../types';
 describe('nvite', () => {
   const testInvite: Invite = {
     relays: ['wss://relay1.example.com', 'wss://relay2.example.com'],
-    pubkeys: ['a'.repeat(64), 'b'.repeat(64)],
-    nsites: ['nsite1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq', 'nsite1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'],
-    napp_pubkeys: ['c'.repeat(64)],
-    follow_packs: ['naddr1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq'],
-    invitor_pubkey: 'd'.repeat(64),
-    invitee_name: 'Alice'
+    to_follow: ['a'.repeat(64), 'b'.repeat(64)],
+    nsite_pubkeys: ['c'.repeat(64), 'd'.repeat(64)],
+    invitor_pubkey: 'e'.repeat(64),
+    invitee_name: 'your boy frank'
   };
 
   it('should encode and decode invite correctly', () => {
@@ -23,11 +21,9 @@ describe('nvite', () => {
   it('should encode without optional fields', () => {
     const minimalInvite: Invite = {
       relays: ['wss://relay.example.com'],
-      pubkeys: [],
-      nsites: [],
-      napp_pubkeys: [],
-      follow_packs: [],
-      invitor_pubkey: 'e'.repeat(64)
+      to_follow: [],
+      nsite_pubkeys: [],
+      invitor_pubkey: 'f'.repeat(64)
     };
     
     const encoded = encodeNvite(minimalInvite);

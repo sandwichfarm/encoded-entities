@@ -26,48 +26,28 @@ export function encodeNvite(invite: Invite): string {
       encodedData.push(relayBytes);
     }
 
-    // Encode pubkeys (type 2)
-    if (invite.pubkeys) {
-      for (const pubkey of invite.pubkeys) {
+    // Encode to_follow pubkeys (type 2)
+    if (invite.to_follow) {
+      for (const pubkey of invite.to_follow) {
         const pubkeyBytes = hexToBytes(pubkey);
         encodedData.push(new Uint8Array([2, pubkeyBytes.length]));
         encodedData.push(pubkeyBytes);
       }
     }
 
-    // Encode nsites (type 3)
-    if (invite.nsites) {
-      for (const nsite of invite.nsites) {
-        const nsiteBytes = new TextEncoder().encode(nsite);
-        encodedData.push(new Uint8Array([3]));
-        encodedData.push(encodeVarInt(nsiteBytes.length));
-        encodedData.push(nsiteBytes);
+    // Encode nsite_pubkeys (type 3)
+    if (invite.nsite_pubkeys) {
+      for (const nsitePubkey of invite.nsite_pubkeys) {
+        const nsitePubkeyBytes = hexToBytes(nsitePubkey);
+        encodedData.push(new Uint8Array([3, nsitePubkeyBytes.length]));
+        encodedData.push(nsitePubkeyBytes);
       }
     }
 
-    // Encode napp_pubkeys (type 4)
-    if (invite.napp_pubkeys) {
-      for (const appPubkey of invite.napp_pubkeys) {
-        const appPubkeyBytes = hexToBytes(appPubkey);
-        encodedData.push(new Uint8Array([4, appPubkeyBytes.length]));
-        encodedData.push(appPubkeyBytes);
-      }
-    }
-
-    // Encode follow_packs (type 5)
-    if (invite.follow_packs) {
-      for (const followPack of invite.follow_packs) {
-        const followPackBytes = new TextEncoder().encode(followPack);
-        encodedData.push(new Uint8Array([5]));
-        encodedData.push(encodeVarInt(followPackBytes.length));
-        encodedData.push(followPackBytes);
-      }
-    }
-
-    // Encode invitee_name if present (type 6)
+    // Encode invitee_name if present (type 4)
     if (invite.invitee_name) {
       const nameBytes = new TextEncoder().encode(invite.invitee_name);
-      encodedData.push(new Uint8Array([6]));
+      encodedData.push(new Uint8Array([4]));
       encodedData.push(encodeVarInt(nameBytes.length));
       encodedData.push(nameBytes);
     }
@@ -103,10 +83,8 @@ export function decodeNvite(encoded: string): Invite {
     let offset = 0;
     const invite: Partial<Invite> = {
       relays: [],
-      pubkeys: [],
-      nsites: [],
-      napp_pubkeys: [],
-      follow_packs: []
+      to_follow: [],
+      nsite_pubkeys: []
     };
 
     while (offset < bytes.length) {
@@ -132,42 +110,24 @@ export function decodeNvite(encoded: string): Invite {
           break;
         }
         case 2: {
-          // Pubkey
+          // To follow pubkey
           const length = bytes[offset];
           offset += 1;
           const pubkey = bytesToHex(bytes.slice(offset, offset + length));
           offset += length;
-          invite.pubkeys!.push(pubkey);
+          invite.to_follow!.push(pubkey);
           break;
         }
         case 3: {
-          // Nsite
-          const [length, bytesRead] = decodeVarInt(bytes, offset);
-          offset += bytesRead;
-          const nsite = new TextDecoder().decode(bytes.slice(offset, offset + length));
+          // Nsite pubkey
+          const length = bytes[offset];
+          offset += 1;
+          const nsitePubkey = bytesToHex(bytes.slice(offset, offset + length));
           offset += length;
-          invite.nsites!.push(nsite);
+          invite.nsite_pubkeys!.push(nsitePubkey);
           break;
         }
         case 4: {
-          // Napp pubkey
-          const length = bytes[offset];
-          offset += 1;
-          const appPubkey = bytesToHex(bytes.slice(offset, offset + length));
-          offset += length;
-          invite.napp_pubkeys!.push(appPubkey);
-          break;
-        }
-        case 5: {
-          // Follow pack
-          const [length, bytesRead] = decodeVarInt(bytes, offset);
-          offset += bytesRead;
-          const followPack = new TextDecoder().decode(bytes.slice(offset, offset + length));
-          offset += length;
-          invite.follow_packs!.push(followPack);
-          break;
-        }
-        case 6: {
           // Invitee name
           const [length, bytesRead] = decodeVarInt(bytes, offset);
           offset += bytesRead;

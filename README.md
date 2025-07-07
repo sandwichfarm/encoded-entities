@@ -17,7 +17,7 @@ Note: `nostr-tools` is a peer dependency and must be installed separately.
 - **nfilter** - Single Nostr filter
 - **nfilters** - Multiple Nostr filters
 - **nfeed** - Combination of filters and relays
-- **nvite** - Nostr invite for new users (relays, pubkeys, nsites, apps, follow packs)
+- **nvite** - Nostr invite for new users (relays, to_follow, nsite_pubkeys)
 - **napp** - Nostr app info (type, platforms, pubkey, relays, servers)
 - **nblob** - Blob/file reference (hash, servers, pubkey, optional path)
 
@@ -136,12 +136,10 @@ import { nvite, encodeNvite, decodeNvite } from 'encoded-entities';
 
 const invite = {
   relays: ['wss://relay1.example.com', 'wss://relay2.example.com'],
-  pubkeys: ['pubkey1', 'pubkey2'],  // Decoded from naddrs
-  nsites: ['nsite1...', 'nsite1...'],  // Encoded nsite entities
-  napp_pubkeys: ['app_pubkey1'],
-  follow_packs: ['naddr1...'],  // Decoded from naddrs
+  to_follow: ['pubkey1', 'pubkey2'],  // Pubkeys to follow
+  nsite_pubkeys: ['pubkey1', 'pubkey2'],  // Pubkeys of nsite entities
   invitor_pubkey: 'invitor_pubkey_hex',
-  invitee_name: 'Alice'  // optional
+  invitee_name: 'your boy frank'  // optional
 };
 
 const encoded = nvite.encode(invite);
@@ -207,12 +205,10 @@ interface Feed {
 
 interface Invite {
   relays: string[];
-  pubkeys: string[];     // Decoded from naddrs
-  nsites: string[];      // Encoded nsite entities
-  napp_pubkeys: string[];// App pubkeys
-  follow_packs: string[];// Decoded from naddrs
-  invitor_pubkey: string;// Hex string
-  invitee_name?: string; // Optional name for invitee
+  to_follow: string[];      // Pubkeys to follow
+  nsite_pubkeys: string[];  // Pubkeys of nsite entities
+  invitor_pubkey: string;   // Hex string
+  invitee_name?: string;    // Optional name for invitee
 }
 
 interface App {

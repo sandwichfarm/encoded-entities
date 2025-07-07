@@ -32,12 +32,10 @@ export interface App {
 
 export interface Invite {
   relays: string[];
-  pubkeys: string[];     // Decoded from naddrs
-  nsites: string[];      // Encoded nsite entities
-  napp_pubkeys: string[];// App pubkeys
-  follow_packs: string[];// Decoded from naddrs
-  invitor_pubkey: string;// Hex string
-  invitee_name?: string; // Optional name for invitee
+  to_follow: string[];      // Pubkeys to follow
+  nsite_pubkeys: string[];  // Pubkeys of nsite entities
+  invitor_pubkey: string;   // Hex string
+  invitee_name?: string;    // Optional name for invitee
 }
 
 export interface Blob {
