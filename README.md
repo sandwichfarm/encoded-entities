@@ -49,7 +49,7 @@ const bunkerInfo = {
   pubkey: 'a'.repeat(64),
   local_key: 'b'.repeat(64),
   relays: ['wss://relay1.example.com', 'wss://relay2.example.com'],
-  secret: 'optional-secret'
+  secret: 'secretkey...'
 };
 
 // Using function interface
