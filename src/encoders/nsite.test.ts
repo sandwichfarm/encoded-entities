@@ -16,28 +16,16 @@ describe('nsite', () => {
     expect(decoded).toEqual(testSite);
   });
 
-  it('should encode with optional paths and hashes', () => {
-    const siteWithPaths: Site = {
-      ...testSite,
-      paths: ['/api/v1', '/nostr'],
-      hashes: ['b'.repeat(64), 'c'.repeat(64)]
+  it('should handle multiple relays and servers', () => {
+    const siteWithMultiple: Site = {
+      relays: ['wss://relay1.example.com', 'wss://relay2.example.com', 'wss://relay3.example.com'],
+      servers: ['https://server1.example.com', 'https://server2.example.com'],
+      pubkey: 'd'.repeat(64)
     };
     
-    const encoded = encodeNsite(siteWithPaths);
+    const encoded = encodeNsite(siteWithMultiple);
     const decoded = decodeNsite(encoded);
-    expect(decoded).toEqual(siteWithPaths);
-  });
-
-  it('should encode with custom fields', () => {
-    const siteWithCustom: Site = {
-      ...testSite,
-      customField: 'custom value',
-      metadata: { version: 1, type: 'blog' }
-    };
-    
-    const encoded = encodeNsite(siteWithCustom);
-    const decoded = decodeNsite(encoded);
-    expect(decoded).toEqual(siteWithCustom);
+    expect(decoded).toEqual(siteWithMultiple);
   });
 
   it('should work with object interface', () => {

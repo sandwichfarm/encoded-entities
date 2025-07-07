@@ -13,10 +13,13 @@ Note: `nostr-tools` is a peer dependency and must be installed separately.
 ## Supported Entity Types
 
 - **nbunksec** - NIP-46 bunker connection info (pubkey, local_key, relays, secret)
-- **nsite** - Nostr site resolution info (relays, servers, pubkey, optional paths/hashes)
+- **nsite** - Nostr site resolution info (relays, servers, pubkey)
 - **nfilter** - Single Nostr filter
 - **nfilters** - Multiple Nostr filters
 - **nfeed** - Combination of filters and relays
+- **nvite** - Nostr invite for new users (relays, pubkeys, nsites, apps, follow packs)
+- **napp** - Nostr app info (type, platforms, pubkey, relays, servers)
+- **nblob** - Blob/file reference (hash, servers, pubkey, optional path)
 
 ## Usage
 
@@ -30,10 +33,10 @@ import * as encodedEntities from 'encoded-entities';
 import { encodeNbunksec, decodeNbunksec } from 'encoded-entities';
 
 // Import entity objects
-import { nbunksec, nsite, nfilter, nfilters, nfeed } from 'encoded-entities';
+import { nbunksec, nsite, nfilter, nfilters, nfeed, nvite, napp, nblob } from 'encoded-entities';
 
 // Import types
-import { BunkerInfo, Site, Feed } from 'encoded-entities';
+import { BunkerInfo, Site, Feed, Invite, App, Blob } from 'encoded-entities';
 // NostrFilter is imported from nostr-tools (peer dependency)
 ```
 
@@ -66,11 +69,7 @@ import { nsite, encodeNsite, decodeNsite } from 'encoded-entities';
 const site = {
   relays: ['wss://relay1.example.com', 'wss://relay2.example.com'],
   servers: ['https://server1.example.com', 'https://server2.example.com'],
-  pubkey: 'a'.repeat(64),  // hex string
-  paths: ['/api/v1', '/nostr'],  // optional
-  hashes: ['b'.repeat(64), 'c'.repeat(64)],  // optional, preferred for integrity
-  // Additional custom fields supported
-  customData: { version: 1 }
+  pubkey: 'a'.repeat(64)  // hex string
 };
 
 const encoded = nsite.encode(site);
@@ -130,6 +129,58 @@ const encoded = nfeed.encode(feed);
 const decoded = nfeed.decode(encoded);
 ```
 
+### nvite - Invite for New Users
+
+```typescript
+import { nvite, encodeNvite, decodeNvite } from 'encoded-entities';
+
+const invite = {
+  relays: ['wss://relay1.example.com', 'wss://relay2.example.com'],
+  pubkeys: ['pubkey1', 'pubkey2'],  // Decoded from naddrs
+  nsites: ['nsite1...', 'nsite1...'],  // Encoded nsite entities
+  napp_pubkeys: ['app_pubkey1'],
+  follow_packs: ['naddr1...'],  // Decoded from naddrs
+  invitor_pubkey: 'invitor_pubkey_hex',
+  invitee_name: 'Alice'  // optional
+};
+
+const encoded = nvite.encode(invite);
+const decoded = nvite.decode(encoded);
+```
+
+### napp - App Information
+
+```typescript
+import { napp, encodeNapp, decodeNapp } from 'encoded-entities';
+
+const app = {
+  type: 'web',  // or 'native'
+  platforms: ['ios', 'android', 'macos', 'windows', 'linux'],
+  pubkey: 'app_pubkey_hex',
+  relays: ['wss://relay1.example.com', 'wss://relay2.example.com'],
+  servers: ['https://app.example.com', 'https://api.example.com']
+};
+
+const encoded = napp.encode(app);
+const decoded = napp.decode(encoded);
+```
+
+### nblob - Blob/File Reference
+
+```typescript
+import { nblob, encodeNblob, decodeNblob } from 'encoded-entities';
+
+const blob = {
+  hash: 'sha256_hash_hex',  // Content hash
+  servers: ['https://blob1.example.com', 'https://blob2.example.com'],
+  pubkey: 'publisher_pubkey_hex',
+  path: '/uploads/document.pdf'  // optional
+};
+
+const encoded = nblob.encode(blob);
+const decoded = nblob.decode(encoded);
+```
+
 ## Type Definitions
 
 ```typescript
@@ -144,9 +195,6 @@ interface Site {
   relays: string[];      // At least one required
   servers: string[];     // At least one required  
   pubkey: string;        // Hex string
-  paths?: string[];      // Optional paths
-  hashes?: string[];     // Optional hashes (preferred for integrity)
-  [key: string]: any;    // Additional custom fields
 }
 
 // NostrFilter type is imported from nostr-tools
@@ -155,6 +203,31 @@ interface Site {
 interface Feed {
   filters: Filter[];     // Filter type from nostr-tools
   relays: string[];
+}
+
+interface Invite {
+  relays: string[];
+  pubkeys: string[];     // Decoded from naddrs
+  nsites: string[];      // Encoded nsite entities
+  napp_pubkeys: string[];// App pubkeys
+  follow_packs: string[];// Decoded from naddrs
+  invitor_pubkey: string;// Hex string
+  invitee_name?: string; // Optional name for invitee
+}
+
+interface App {
+  type: 'web' | 'native';
+  platforms: string[];   // e.g., ['ios', 'android', 'macos', 'windows', 'linux']
+  pubkey: string;        // Hex string
+  relays: string[];
+  servers: string[];
+}
+
+interface Blob {
+  path?: string;         // Optional file path or identifier
+  hash: string;          // Content hash (hex string)
+  servers: string[];     // Server URLs where blob is hosted
+  pubkey: string;        // Publisher pubkey (hex string)
 }
 ```
 

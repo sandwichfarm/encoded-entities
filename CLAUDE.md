@@ -1,0 +1,1 @@
+- Commit when a task has been completed, push when there are no further tasks.
