@@ -1,13 +1,13 @@
 > Experimental & in-flight
 
-# encoded-entities
+# @sandwichfarm/encoded-entities
 
 Unofficial NIP-19 encoded entities. This library provides encoding and decoding functions for various Nostr entity types using bech32 encoding.
 
 ## Installation
 
 ```bash
-npm install encoded-entities nostr-tools
+npm install @sandwichfarm/encoded-entities nostr-tools
 ```
 
 Note: `nostr-tools` is a peer dependency and must be installed separately.
@@ -29,23 +29,23 @@ Note: `nostr-tools` is a peer dependency and must be installed separately.
 
 ```typescript
 // Import everything
-import * as encodedEntities from 'encoded-entities';
+import * as encodedEntities from '@sandwichfarm/encoded-entities';
 
 // Import specific encoders/decoders
-import { encodeNbunksec, decodeNbunksec } from 'encoded-entities';
+import { encodeNbunksec, decodeNbunksec } from '@sandwichfarm/encoded-entities';
 
 // Import entity objects
-import { nbunksec, nsite, nfilter, nfilters, nfeed, nvite, napp, nblob } from 'encoded-entities';
+import { nbunksec, nsite, nfilter, nfilters, nfeed, nvite, napp, nblob } from '@sandwichfarm/encoded-entities';
 
 // Import types
-import { BunkerInfo, Site, Feed, Invite, App, Blob } from 'encoded-entities';
+import { BunkerInfo, Site, Feed, Invite, App, Blob } from '@sandwichfarm/encoded-entities';
 // NostrFilter is imported from nostr-tools (peer dependency)
 ```
 
 ### nbunksec - Bunker Connection Info
 
 ```typescript
-import { nbunksec, encodeNbunksec, decodeNbunksec } from 'encoded-entities';
+import { nbunksec, encodeNbunksec, decodeNbunksec } from '@sandwichfarm/encoded-entities';
 
 const bunkerInfo = {
   pubkey: 'a'.repeat(64),
@@ -66,7 +66,7 @@ const decoded2 = nbunksec.decode(encoded2);
 ### nsite - Site Resolution Info
 
 ```typescript
-import { nsite, encodeNsite, decodeNsite } from 'encoded-entities';
+import { nsite, encodeNsite, decodeNsite } from '@sandwichfarm/encoded-entities';
 
 const site = {
   relays: ['wss://relay1.example.com', 'wss://relay2.example.com'],
@@ -81,7 +81,7 @@ const decoded = nsite.decode(encoded);
 ### nfilter - Single Filter
 
 ```typescript
-import { nfilter, encodeNfilter, decodeNfilter } from 'encoded-entities';
+import { nfilter, encodeNfilter, decodeNfilter } from '@sandwichfarm/encoded-entities';
 
 const filter = {
   ids: ['eventid1', 'eventid2'],
@@ -103,7 +103,7 @@ const decoded = nfilter.decode(encoded);
 ### nfilters - Multiple Filters
 
 ```typescript
-import { nfilters, encodeNfilters, decodeNfilters } from 'encoded-entities';
+import { nfilters, encodeNfilters, decodeNfilters } from '@sandwichfarm/encoded-entities';
 
 const filters = [
   { kinds: [1], authors: ['pubkey1'], limit: 10 },
@@ -117,7 +117,7 @@ const decoded = nfilters.decode(encoded);
 ### nfeed - Filters + Relays
 
 ```typescript
-import { nfeed, encodeNfeed, decodeNfeed } from 'encoded-entities';
+import { nfeed, encodeNfeed, decodeNfeed } from '@sandwichfarm/encoded-entities';
 
 const feed = {
   filters: [
@@ -134,7 +134,7 @@ const decoded = nfeed.decode(encoded);
 ### nvite - Invite for New Users
 
 ```typescript
-import { nvite, encodeNvite, decodeNvite } from 'encoded-entities';
+import { nvite, encodeNvite, decodeNvite } from '@sandwichfarm/encoded-entities';
 
 const invite = {
   relays: ['wss://relay1.example.com', 'wss://relay2.example.com'],
@@ -151,7 +151,7 @@ const decoded = nvite.decode(encoded);
 ### napp - App Information
 
 ```typescript
-import { napp, encodeNapp, decodeNapp } from 'encoded-entities';
+import { napp, encodeNapp, decodeNapp } from '@sandwichfarm/encoded-entities';
 
 const app = {
   type: 'web',  // or 'native'
@@ -168,7 +168,7 @@ const decoded = napp.decode(encoded);
 ### nblob - Blob/File Reference
 
 ```typescript
-import { nblob, encodeNblob, decodeNblob } from 'encoded-entities';
+import { nblob, encodeNblob, decodeNblob } from '@sandwichfarm/encoded-entities';
 
 const blob = {
   hash: 'sha256_hash_hex',  // Content hash

@@ -1,0 +1,36 @@
+# Source files
+src/
+*.ts
+!dist/**/*.d.ts
+
+# Config files
+.github/
+.vscode/
+.idea/
+tsconfig.json
+jest.config.js
+.eslintrc.js
+
+# Test files
+**/*.test.*
+**/*.spec.*
+__tests__/
+coverage/
+
+# Development files
+*.log
+.DS_Store
+node_modules/
+CLAUDE.md
+.changeset/
+pnpm-lock.yaml
+
+# Documentation
+RELEASE.md
+
+# Git files
+.git/
+.gitignore
+
+# Build artifacts (except dist)
+*.tgz

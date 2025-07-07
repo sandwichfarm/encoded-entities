@@ -1,15 +1,32 @@
 {
-  "name": "encoded-entities",
+  "name": "@sandwichfarm/encoded-entities",
   "version": "0.1.0",
   "description": "Unofficial NIP-19 encoded entities for Nostr",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sandwichfarm/encoded-entities.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sandwichfarm/encoded-entities/issues"
+  },
+  "homepage": "https://github.com/sandwichfarm/encoded-entities#readme",
   "scripts": {
     "build": "tsc",
     "test": "jest",
     "dev": "tsc --watch",
     "lint": "eslint src/**/*.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build && npm test",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "npm run build && changeset publish"
   },
   "keywords": [
     "nostr",
@@ -25,6 +42,7 @@
     "nostr-tools": "^2.0.0"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.29.5",
     "@types/jest": "^29.5.0",
     "@types/node": "^20.0.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
