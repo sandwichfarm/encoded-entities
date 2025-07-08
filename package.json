@@ -1,6 +1,6 @@
 {
   "name": "@sandwichfarm/encoded-entities",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Unofficial NIP-19 encoded entities for Nostr",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
