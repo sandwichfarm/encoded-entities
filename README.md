@@ -50,8 +50,7 @@ import { nbunksec, encodeNbunksec, decodeNbunksec } from '@sandwichfarm/encoded-
 const bunkerInfo = {
   pubkey: 'a'.repeat(64),
   local_key: 'b'.repeat(64),
-  relays: ['wss://relay1.example.com', 'wss://relay2.example.com'],
-  secret: 'secretkey...'
+  relays: ['wss://relay1.example.com', 'wss://relay2.example.com']
 };
 
 // Using function interface
