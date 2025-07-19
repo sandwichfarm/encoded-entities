@@ -1,4 +1,4 @@
-> Experimental & in-flight
+> Experimental & in-flight; use may result in flaming from fiatjaf.
 
 # @sandwichfarm/encoded-entities
 
