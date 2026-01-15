@@ -2,7 +2,7 @@ import { bech32 } from 'bech32';
 import { Invite } from '../types';
 import { encodeVarInt, decodeVarInt, hexToBytes, bytesToHex } from '../utils';
 
-export function encodeNvite(invite: Invite): string {
+export function encodeNinvite(invite: Invite): string {
   try {
     if (!invite.relays || invite.relays.length === 0) {
       throw new Error('At least one relay is required');
@@ -64,16 +64,16 @@ export function encodeNvite(invite: Invite): string {
       offset += part.length;
     }
 
-    return bech32.encode('nvite', bech32.toWords(combinedData), 1000);
+    return bech32.encode('ninvite', bech32.toWords(combinedData), 1000);
   } catch (error: unknown) {
-    throw new Error(`Failed to encode nvite: ${error}`);
+    throw new Error(`Failed to encode ninvite: ${error}`);
   }
 }
 
-export function decodeNvite(encoded: string): Invite {
+export function decodeNinvite(encoded: string): Invite {
   try {
     const { prefix, words } = bech32.decode(encoded, 1000);
-    if (prefix !== 'nvite') {
+    if (prefix !== 'ninvite') {
       throw new Error(`Invalid prefix: ${prefix}`);
     }
 
@@ -150,11 +150,11 @@ export function decodeNvite(encoded: string): Invite {
 
     return invite as Invite;
   } catch (error: unknown) {
-    throw new Error(`Failed to decode nvite: ${error}`);
+    throw new Error(`Failed to decode ninvite: ${error}`);
   }
 }
 
-export const nvite = {
-  encode: encodeNvite,
-  decode: decodeNvite
+export const ninvite = {
+  encode: encodeNinvite,
+  decode: decodeNinvite
 };

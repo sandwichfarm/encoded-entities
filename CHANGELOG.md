@@ -10,6 +10,6 @@
   - nfilter - Single Nostr filter
   - nfilters - Multiple Nostr filters
   - nfeed - Combination of filters and relays
-  - nvite - Nostr invite for new users
+  - ninvite - Nostr invite for new users
   - napp - Nostr app info
   - nblob - Blob/file reference

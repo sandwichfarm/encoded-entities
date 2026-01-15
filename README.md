@@ -19,7 +19,7 @@ Note: `nostr-tools` is a peer dependency and must be installed separately.
 - **nfilter** - Single Nostr filter
 - **nfilters** - Multiple Nostr filters
 - **nfeed** - Combination of filters and relays
-- **nvite** - Nostr invite for new users (relays, to_follow, nsite_pubkeys)
+- **ninvite** - Nostr invite for new users (relays, to_follow, nsite_pubkeys)
 - **napp** - Nostr app info (type, platforms, pubkey, relays, servers)
 - **nblob** - Blob/file reference (hash, servers, pubkey, optional path)
 
@@ -35,7 +35,7 @@ import * as encodedEntities from '@sandwichfarm/encoded-entities';
 import { encodeNbunksec, decodeNbunksec } from '@sandwichfarm/encoded-entities';
 
 // Import entity objects
-import { nbunksec, nsite, nfilter, nfilters, nfeed, nvite, napp, nblob } from '@sandwichfarm/encoded-entities';
+import { nbunksec, nsite, nfilter, nfilters, nfeed, ninvite, napp, nblob } from '@sandwichfarm/encoded-entities';
 
 // Import types
 import { BunkerInfo, Site, Feed, Invite, App, Blob } from '@sandwichfarm/encoded-entities';
@@ -130,10 +130,10 @@ const encoded = nfeed.encode(feed);
 const decoded = nfeed.decode(encoded);
 ```
 
-### nvite - Invite for New Users
+### ninvite - Invite for New Users
 
 ```typescript
-import { nvite, encodeNvite, decodeNvite } from '@sandwichfarm/encoded-entities';
+import { ninvite, encodeNinvite, decodeNinvite } from '@sandwichfarm/encoded-entities';
 
 const invite = {
   relays: ['wss://relay1.example.com', 'wss://relay2.example.com'],
@@ -143,8 +143,8 @@ const invite = {
   invitee_name: 'your boy frank'  // optional
 };
 
-const encoded = nvite.encode(invite);
-const decoded = nvite.decode(encoded);
+const encoded = ninvite.encode(invite);
+const decoded = ninvite.decode(encoded);
 ```
 
 ### napp - App Information
