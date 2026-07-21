@@ -14,7 +14,7 @@ Note: `nostr-tools` is a peer dependency and must be installed separately.
 
 ## Supported Entity Types
 
-- **nbunksec** - NIP-46 bunker connection info (pubkey, local_key, relays, secret)
+- **nbunksec** - NIP-46 bunker connection info (pubkey, local_key, relays)
 - **nsite** - Nostr site resolution info (relays, servers, pubkey)
 - **nfilter** - Single Nostr filter
 - **nfilters** - Multiple Nostr filters
